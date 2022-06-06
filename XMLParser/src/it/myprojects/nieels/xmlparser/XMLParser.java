@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Manages an XML file's reading and writing, contains methods for parsing information
- * from an XML file to a it.myprojects.nieels.xmlparser.XMLObject and vice versa.
+ * from an XML file to a XMLObject and vice versa.
  * @author Nicol Stocchetti.
  *
  */
@@ -74,9 +74,9 @@ public class XMLParser {
 	 * Initializes the stream writer and creates the XML document to write on, terminates the program if creation of the file is not possible.
 	 * @param filePath the path of the file to create, String.
 	 */
-	private static void setWriter(String filePath) {
+	private static void setWriter(String filePath, String encoding) {
 		try {
-			XMLParser.writer = XMLParser.outputFactory.createXMLStreamWriter(new FileOutputStream(filePath), "utf-8");
+			XMLParser.writer = XMLParser.outputFactory.createXMLStreamWriter(new FileOutputStream(filePath), encoding);
 			//XMLParser.writer.writeStartDocument("utf-8", "1.0");
 		} catch (Exception e) {
 			System.err.println("Error initializing the writer: " + e.getMessage());
@@ -87,7 +87,7 @@ public class XMLParser {
 	}
 
 	/**
-	 * Cretes an XMLObject object by parsing the contents of the provided XML file, returns null in case something goes wrong.
+	 * Creates an XMLObject object by parsing the contents of the provided XML file, returns null in case something goes wrong.
 	 * @param filePath the path of the XML file to parse, String.
 	 * @return an object containing the data parsed from the provided XML file (or null in case of error), XMLObject.
 	 */
@@ -245,7 +245,7 @@ public class XMLParser {
 	 */
 	public static void writeDocument(XMLObject object, String filePath) {
 		try {
-			setWriter(filePath);
+			setWriter(filePath, object.getXMLDeclarationEncoding());
 			
 			writer.writeStartDocument(object.getXMLDeclarationEncoding(), object.getXMLDeclarationVersion());
 			

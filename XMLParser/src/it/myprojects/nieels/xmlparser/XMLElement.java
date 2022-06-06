@@ -81,6 +81,46 @@ public class XMLElement {
 	}
 	
 	/**
+	 * Returns the child elements of this XML element.
+	 * @return the child elements, ArrayList<XMLElement>.
+	 */
+	public ArrayList<XMLElement> getChildElements() {
+		ArrayList<XMLElement> childElements = new ArrayList<XMLElement>();
+		
+		if (this.content == null) {
+			return childElements;
+		}
+		
+		for (Object obj : this.content) {
+			if (obj instanceof XMLElement) {
+				childElements.add((XMLElement)obj);
+			}
+		}
+		
+		return childElements;
+	}
+	
+	/**
+	 * Finds all the child elements enclosed in this XML element which have a specific tag.
+	 * @param tag the element tag to search for, String.
+	 * @return all the elements named by the chosen tag, ArrayList<XMLElement>.
+	 */
+	public ArrayList<XMLElement> findAllEnclosedElements(String tag) {
+		ArrayList<XMLElement> foundTagElements = new ArrayList<XMLElement>();
+		ArrayList<XMLElement> childElements;
+		
+		childElements = this.getChildElements();
+		for (XMLElement child : childElements) {
+			if (child.getTag().equals(tag)) {
+				foundTagElements.add(child);
+			}
+			foundTagElements.addAll(child.findAllEnclosedElements(tag));
+		}
+		
+		return foundTagElements;
+	}
+	
+	/**
 	 * Returns a String describing the XML element.
 	 * @return String.
 	 */
